@@ -35,6 +35,18 @@ const Vector CaCu::Neg(const Vector & v)
 	return tempVector;
 }
 
+const Vector CaCu::Sub(const Vector & v1, const Vector & v2)
+{
+	///	Caution!!	No exception handling	///
+
+	Vector tempVector(v1);
+	for (int i = 0; i < tempVector.Data.size(); i++)
+	{
+		tempVector.Data[i] -= v2.Data[i];
+	}
+	return tempVector;
+}
+
 const Vector CaCu::Scale(const Vector & v, const double & scale)
 {
 	Vector tempVector(v);
@@ -188,4 +200,23 @@ const double CaCu::Angle(const Vector & v1, const Vector & v2)
 		throw new std::exception("(Angle) No zero vector allowed");
 
 	return acos((Dot(v1, v2) / (length1*length2))) *180.0 / PI;
+}
+
+const std::vector<Vector> CaCu::Orthonormal(const std::vector<Vector>& vs, int size)
+{
+	std::vector<Vector> vecs = std::vector<Vector>(vs);
+
+	for (int i = 0; i < size; i++)
+	{
+		for (int j = (i-1); j >= 0; j--)
+		{
+			vecs[i] = Sub(vecs[i], (Projection(vecs[i], vecs[j])));
+		}
+	}
+	for (int i = 0; i < size; i++)
+	{
+		vecs[i] = Normalize(vecs[i]);
+	}
+
+	return vecs;
 }

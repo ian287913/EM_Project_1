@@ -13,6 +13,7 @@ public:
 	///const Vector operator =(const Vector &v2);
 	static const Vector Add(const Vector &v1, const Vector &v2);
 	static const Vector Neg(const Vector &v);
+	static const Vector Sub(const Vector &v1, const Vector &v2);
 	static const Vector Scale(const Vector &v, const double &scale);	//	scale
 	static const Vector Scale(const Vector &v1, const Vector &v2);		//	scale by 1 element Vector
 	static const double Norm(const Vector &v);
@@ -26,10 +27,11 @@ public:
 	static const bool IsParallel(const Vector &v1, const Vector &v2);
 	static const bool IsOrthogonal(const Vector &v1, const Vector &v2);
 	static const double Angle(const Vector &v1, const Vector &v2);
+	static const std::vector<Vector> Orthonormal(const std::vector<Vector> &vs, int size);
 };
 
 //	Exception
-class myException: public std::exception
+class myException : public std::exception
 {
 public:
 	myException(std::string content) : Content(content) {}
