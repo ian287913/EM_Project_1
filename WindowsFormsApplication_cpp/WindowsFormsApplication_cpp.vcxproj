@@ -141,6 +141,7 @@
     <ClCompile Include="WindowsForm.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CaCu.h" />
     <ClInclude Include="DataManager.h" />
     <ClInclude Include="DotNetUtilities.h" />
     <ClInclude Include="WindowsForm.h">
