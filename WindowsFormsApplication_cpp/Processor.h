@@ -1,7 +1,9 @@
 #pragma once
 #include <vector>
 #include <string>
+#include <sstream>
 #include "Vec.h"
+#include"CaCu.h"
 
 static class Processor
 {

@@ -68,6 +68,7 @@ bool DataManager::LoadVectorData()
 		}
 		//讀入輸入檔案中最後一個向量資訊
 		Vector tempVector;
+		tempVectorData.pop_back();
 		tempVector.Data = tempVectorData;
 		std::string vectorVariableTemp = "$v" + std::to_string(VectorVariableIndex);
 		tempVector.Name = vectorVariableTemp;

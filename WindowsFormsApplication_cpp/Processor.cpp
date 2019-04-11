@@ -40,24 +40,43 @@ std::string Processor::Start(std::vector<std::string> input)
 						break;
 					}
 				}
-				switch (func)
+				double dout = 0.0;
+				Vector vout;
+				std::string sout = "";
+				std::ostringstream strs;
+				try
 				{
-				case 0:		// norm 
+					switch (func)
+					{
+					case 0:		// norm 
+						vout = getSource(input[1]);
+						dout = CaCu::Norm(vout);
+						strs << dout;
+						sout += strs.str();
+						return sout;
+					case 1:		// normlz
+						vout = getSource(input[1]);
+						vout = CaCu::Normalize(vout);
+						sout = VectorToString(vout);
+						return sout;
+					case 2:		// cross
 
-				case 1:		// normlz
-				case 2:		// cross
-				case 3:		// comp
-				case 4:		// proj
-				case 5:		// area
-				case 6:		// ispar
-				case 7:		// isorth
-				case 8:		// angle
-				case 9:		// pn
-				case 10:	// islin
-				case 11:	// ob 
-				default:
-					return "This function is invalid for now.";
-					break;
+					case 3:		// comp
+					case 4:		// proj
+					case 5:		// area
+					case 6:		// ispar
+					case 7:		// isorth
+					case 8:		// angle
+					case 9:		// pn
+					case 10:	// islin
+					case 11:	// ob 
+					default:
+						return "This function is invalid for now.";
+						break;
+					}
+				}
+				catch (const std::exception& e)
+				{
 				}
 				return "function end.";
 			}
@@ -67,14 +86,61 @@ std::string Processor::Start(std::vector<std::string> input)
 			std::vector<std::string> postfix = InfixToPostfix(input);
 			// now process postfix:
 			std::string output;
-
-
-			// test postfix out
-			for (int i = 0; i < postfix.size(); i++)
+			std::vector<Vector> stack;
+			try
 			{
-				output += postfix[i];
+				for (int i = 0; i < postfix.size(); i++)
+				{
+					if (postfix[i][0] == '$')
+					{
+						Vector push = getSource(postfix[i]);
+						stack.push_back(push);
+					}
+					else
+					{
+						if (postfix[i] == "+")
+						{
+							Vector v1, v2, result;
+							v1 = stack[stack.size() - 1];
+							stack.pop_back();
+							v2 = stack[stack.size() - 1];
+							stack.pop_back();
+							result = CaCu::Add(v1, v2);
+							stack.push_back(result);
+						}
+						if (postfix[i] == "*")
+						{
+							Vector v1, v2, result;
+							v1 = stack[stack.size() - 1];
+							stack.pop_back();
+							v2 = stack[stack.size() - 1];
+							stack.pop_back();
+							if (v1.Data.size() > 1)
+							{
+								Vector re;
+								re.Data.clear();
+								re.Data.push_back(CaCu::Dot(v2, v1));
+								result = re;
+							}
+							else
+								result = CaCu::Scale(v2, v1);
+							stack.push_back(result);
+						}
+					}
+				}
+				if (stack.size() != 1)
+					throw new std::exception("Stack error");
+				output = VectorToString(stack[0]);
 			}
-			// test
+			catch (const myException e)
+			{
+				output = "Cacu error: " + e.Content;
+			}
+			catch (const std::exception& e)
+			{
+				output = "Processor error: ";
+				output += e.what();
+			}
 
 			return output;
 		}
