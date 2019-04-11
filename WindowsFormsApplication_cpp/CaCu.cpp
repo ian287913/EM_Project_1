@@ -61,26 +61,13 @@ const Vector CaCu::Scale(const Vector & v1, const Vector & v2)
 
 const double CaCu::Norm(const Vector & v)
 {
-	if (v.Data.size() == 0)
-		return 0.0;
-
-	double sum = 0;
-	for (int i = 0; i < v.Data.size(); i++)
-	{
-		sum += pow(abs(v.Data[i]), v.Data.size());
-	}
-	return pow(sum, (1.0 / v.Data.size()));
+	return Length(v);
 }
 
 const Vector CaCu::Normalize(const Vector & v)
 {
 	Vector tempVector(v);
-
-	double length = 0.0;
-	for (int i = 0; i < tempVector.Data.size(); i++)
-	{
-		length += (tempVector.Data[i] * tempVector.Data[i]);
-	}
+	double length = Length(v);
 	if (length == 0.0)
 	{
 		///	Turn to ZERO vector?	Exception?
