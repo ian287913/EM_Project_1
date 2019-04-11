@@ -363,7 +363,7 @@ namespace WindowsFormsApplication_cpp {
 		}
 		//將檔案路徑名稱傳入dataManager
 		dataManager->SetFileName(tempFileName);
-		//從讀取讀取向量資料
+		//讀取資料
 		if (dataManager->LoadVectorData(Processor::isVector))
 		{
 			// 屬於讀Vector的狀況
@@ -400,6 +400,38 @@ namespace WindowsFormsApplication_cpp {
 			else
 			{
 				// 屬於Matrix
+				//將VectorList中項目先做清除
+				VectorList->Items->Clear();
+				//取得所有向量資料
+				std::vector<Matrix> Mats = dataManager->GetMatrices();
+				Processor::SourceMatrices.clear();
+				Processor::SourceMatrices = Mats;
+				for (unsigned int i = 0; i < Mats.size(); i++)
+				{
+					//將檔案名稱存入暫存
+					std::string tempString;
+					VectorList->Items->Add(gcnew String(Mats[i].Name.c_str()) + Environment::NewLine);
+					//將輸出格式存入暫存
+					tempString += " [";
+					//將輸出資料存入暫存
+					for (unsigned int j = 0; j < Mats[i].Data.size(); j++)
+					{
+						for (unsigned int k = 0; k < Mats[i].Data[i].size(); k++)
+						{
+							std::string scalarString = std::to_string(Mats[i].Data[j][k]);
+							tempString += scalarString.substr(0, scalarString.size() - 5);
+							if (k != Mats[i].Data[j].size() - 1)
+								tempString += ",";
+						}
+						VectorList->Items->Add(gcnew String(tempString.c_str()) + Environment::NewLine);
+						tempString = "";
+					}
+					//將輸出格式存入暫存
+					tempString += "]";
+					VectorList->Items->Add(gcnew String(tempString.c_str()) + Environment::NewLine);
+				}
+
+				Output->Text += "-Matrices data have been loaded-" + Environment::NewLine;
 			}
 		}
 	}

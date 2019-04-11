@@ -10,6 +10,7 @@ static class Processor
 {
 public:
 	static std::vector<std::string> FunctionList;
+	static std::vector<std::string> FunctionListM;
 	static std::vector<std::string> priority;
 	static std::vector<Vector> SourceVectors;
 	static std::vector<Matrix> SourceMatrices;
@@ -18,5 +19,7 @@ public:
 	static std::string Start(std::vector<std::string> input);
 	static std::vector<std::string> InfixToPostfix(std::vector<std::string> input);
 	static std::string VectorToString(Vector);
+	static std::string MatrixToString(Matrix);
 	static const Vector getSource(std::string);
+	static const Matrix getSourceM(std::string);
 };
