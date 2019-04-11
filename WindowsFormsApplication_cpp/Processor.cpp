@@ -96,17 +96,20 @@ std::string Processor::Start(std::vector<std::string> input)
 							stack.pop_back();
 							v2 = stack[stack.size() - 1];
 							stack.pop_back();
-							if (v2.Data.size() > 1)
+							if (v1.Data.size() > 1)
 							{
-
+								Vector re;
+								re.Data.clear();
+								re.Data.push_back(CaCu::Dot(v2, v1));
+								result = re;
 							}
 							else
-								result = CaCu::Scale(v1, v2);
+								result = CaCu::Scale(v2, v1);
 							stack.push_back(result);
 						}
 					}
 				}
-				//if (stack.size() != 1)
+				if (stack.size() != 1)
 					throw new std::exception("Stack error");
 				output = VectorToString(stack[0]);
 			}
