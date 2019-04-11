@@ -146,6 +146,7 @@
     <ClInclude Include="CaCu.h" />
     <ClInclude Include="DataManager.h" />
     <ClInclude Include="DotNetUtilities.h" />
+    <ClInclude Include="Matrix.h" />
     <ClInclude Include="Processor.h" />
     <ClInclude Include="Vec.h" />
     <ClInclude Include="WindowsForm.h">

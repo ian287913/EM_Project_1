@@ -36,15 +36,10 @@ namespace WindowsFormsApplication_cpp {
 				delete components;
 			}
 		}
-
 	private: System::Windows::Forms::MenuStrip^  menuStrip2;
 	private: System::Windows::Forms::ToolStripMenuItem^  FileToolStripMenuItem;
-
 	private: System::Windows::Forms::TableLayoutPanel^  tableLayoutPanel1;
 	private: System::Windows::Forms::ToolStripMenuItem^  LoadVectorToolStripMenuItem;
-
-
-
 	private: System::Windows::Forms::FlowLayoutPanel^  flowLayoutPanel1;
 	private: System::Windows::Forms::FlowLayoutPanel^  flowLayoutPanel2;
 	private: System::Windows::Forms::Label^  OutputLabel;
@@ -54,25 +49,6 @@ namespace WindowsFormsApplication_cpp {
 	private: System::Windows::Forms::TextBox^  Input;
 	private: System::Windows::Forms::Label^  VectorLabel;
 	private: System::Windows::Forms::ListBox^  VectorList;
-
-
-
-	protected:
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	protected:
 
 	private:
@@ -364,38 +340,67 @@ namespace WindowsFormsApplication_cpp {
 		//字串轉制string^ to string
 		std::string tempFileName;
 		MarshalString(openFileDialog1->FileName, tempFileName);
+		Output->Text += "-Check if Vectors file-" + Environment::NewLine;
+		std::string name;
+		for (char c : tempFileName)
+		{
+			if (c == '\\')
+				name = "";
+			else
+			{
+				name += c;
+			}
+		}
+		if (name[0] == 'v' || name[0] == 'V') 
+		{
+			Processor::isVector = true;
+			Output->Text += "TRUE" + Environment::NewLine;
+		}
+		else 
+		{
+			Processor::isVector = false;
+			Output->Text += "FALSE" + Environment::NewLine;
+		}
 		//將檔案路徑名稱傳入dataManager
 		dataManager->SetFileName(tempFileName);
 		//從讀取讀取向量資料
-		if (dataManager->LoadVectorData())
+		if (dataManager->LoadVectorData(Processor::isVector))
 		{
-			//將VectorList中項目先做清除
-			VectorList->Items->Clear();
-			//取得所有向量資料
-			std::vector<Vector> vectors = dataManager->GetVectors();
-			Processor::SourceVectors.clear();
-			Processor::SourceVectors = vectors;
-			for (unsigned int i = 0; i < vectors.size(); i++)
+			// 屬於讀Vector的狀況
+			if (Processor::isVector)
 			{
-				//將檔案名稱存入暫存
-				std::string tempString = vectors[i].Name;
-				//將輸出格式存入暫存
-				tempString += " [";
-				//將輸出資料存入暫存
-				for (unsigned int j = 0; j < vectors[i].Data.size(); j++)
+				//將VectorList中項目先做清除
+				VectorList->Items->Clear();
+				//取得所有向量資料
+				std::vector<Vector> vectors = dataManager->GetVectors();
+				Processor::SourceVectors.clear();
+				Processor::SourceVectors = vectors;
+				for (unsigned int i = 0; i < vectors.size(); i++)
 				{
-					std::string scalarString = std::to_string(vectors[i].Data[j]);
-					tempString += scalarString.substr(0, scalarString.size() - 5);
-					if (j != vectors[i].Data.size() - 1)
-						tempString += ",";
+					//將檔案名稱存入暫存
+					std::string tempString = vectors[i].Name;
+					//將輸出格式存入暫存
+					tempString += " [";
+					//將輸出資料存入暫存
+					for (unsigned int j = 0; j < vectors[i].Data.size(); j++)
+					{
+						std::string scalarString = std::to_string(vectors[i].Data[j]);
+						tempString += scalarString.substr(0, scalarString.size() - 5);
+						if (j != vectors[i].Data.size() - 1)
+							tempString += ",";
+					}
+					//將輸出格式存入暫存
+					tempString += "]";
+					//將項目加入VectorList中
+					VectorList->Items->Add(gcnew String(tempString.c_str()));
 				}
-				//將輸出格式存入暫存
-				tempString += "]";
-				//將項目加入VectorList中
-				VectorList->Items->Add(gcnew String(tempString.c_str()));
-			}
 
-			Output->Text += "-Vector datas have been loaded-" + Environment::NewLine;
+				Output->Text += "-Vector datas have been loaded-" + Environment::NewLine;
+			}
+			else
+			{
+				// 屬於Matrix
+			}
 		}
 	}
 	};

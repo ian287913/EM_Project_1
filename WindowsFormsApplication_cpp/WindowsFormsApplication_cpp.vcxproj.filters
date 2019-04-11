@@ -50,6 +50,9 @@
     <ClInclude Include="Vec.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
+    <ClInclude Include="Matrix.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="WindowsForm.resx">
