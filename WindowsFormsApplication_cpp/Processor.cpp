@@ -56,6 +56,8 @@ std::string Processor::Start(std::vector<std::string> input)
 							break;
 						}
 					}
+					std::vector<Vector> vvout;
+					bool bout;
 					double dout = 0.0;
 					Vector vout, vout0;
 					std::string sout = "";
@@ -89,13 +91,58 @@ std::string Processor::Start(std::vector<std::string> input)
 							sout += strs.str();
 							return sout;
 						case 4:		// proj
+							vout = getSource(input[1]);
+							vout0 = getSource(input[2]);
+							vout = CaCu::Projection(vout, vout0);
+							sout = VectorToString(vout);
+							return sout;
 						case 5:		// area
+							vout = getSource(input[1]);
+							vout0 = getSource(input[2]);
+							dout = CaCu::Triangle(vout, vout0);
+							strs << dout;
+							sout += strs.str();
+							return sout;
 						case 6:		// ispar
+							vout = getSource(input[1]);
+							vout0 = getSource(input[2]);
+							bout = CaCu::IsParallel(vout, vout0);
+							strs << ((bout) ? "True" : "False");
+							sout += strs.str();
+							return sout;
 						case 7:		// isorth
+							vout = getSource(input[1]);
+							vout0 = getSource(input[2]);
+							bout = CaCu::IsOrthogonal(vout, vout0);
+							strs << ((bout) ? "True" : "False");
+							sout += strs.str();
+							return sout;
 						case 8:		// angle
+							vout = getSource(input[1]);
+							vout0 = getSource(input[2]);
+							dout = CaCu::Angle(vout, vout0);
+							strs << dout;
+							sout += strs.str();
+							return sout;
 						case 9:		// pn
+							vout = getSource(input[1]);
+							vout0 = getSource(input[2]);
+							vout = CaCu::Cross(vout, vout0);
+							sout = VectorToString(vout);
+							return sout;
 						case 10:	// islin
 						case 11:	// ob 
+							for (int i = 1; i < input.size(); i++)
+							{
+								vvout.push_back(getSource(input[i]));
+							}
+							vvout = CaCu::Orthonormal(vvout, vvout.size());
+							for (Vector v : vvout)
+							{
+								strs << VectorToString(v) << std::endl;
+							}
+							sout += strs.str();
+							return sout;
 						default:
 							return "This function is invalid for now.";
 							break;

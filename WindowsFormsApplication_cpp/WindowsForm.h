@@ -309,6 +309,11 @@ namespace WindowsFormsApplication_cpp {
 				}
 			}
 			//反之則判斷找不到指令
+			else if (userCommand[0] == "clear")
+			{
+				Output->Text = "";
+				Input->Text = "";
+			}
 			else
 			{
 				Output->Text += "-Processor-" + Environment::NewLine;
