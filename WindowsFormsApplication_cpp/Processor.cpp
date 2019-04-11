@@ -67,14 +67,58 @@ std::string Processor::Start(std::vector<std::string> input)
 			std::vector<std::string> postfix = InfixToPostfix(input);
 			// now process postfix:
 			std::string output;
-
-
-			// test postfix out
-			for (int i = 0; i < postfix.size(); i++)
+			std::vector<Vector> stack;
+			try
 			{
-				output += postfix[i];
+				for (int i = 0; i < postfix.size(); i++)
+				{
+					if (postfix[i][0] == '$')
+					{
+						Vector push = getSource(postfix[i]);
+						stack.push_back(push);
+					}
+					else
+					{
+						if (postfix[i] == "+")
+						{
+							Vector v1, v2, result;
+							v1 = stack[stack.size() - 1];
+							stack.pop_back();
+							v2 = stack[stack.size() - 1];
+							stack.pop_back();
+							result = CaCu::Add(v1, v2);
+							stack.push_back(result);
+						}
+						if (postfix[i] == "*")
+						{
+							Vector v1, v2, result;
+							v1 = stack[stack.size() - 1];
+							stack.pop_back();
+							v2 = stack[stack.size() - 1];
+							stack.pop_back();
+							if (v2.Data.size() > 1)
+							{
+
+							}
+							else
+								result = CaCu::Scale(v1, v2);
+							stack.push_back(result);
+						}
+					}
+				}
+				//if (stack.size() != 1)
+					throw new std::exception("Stack error");
+				output = VectorToString(stack[0]);
 			}
-			// test
+			catch (const myException e)
+			{
+				output = "Cacu error: " + e.Content;
+			}
+			catch (const std::exception& e)
+			{
+				output = "Processor error: ";
+				output += e.what();
+			}
 
 			return output;
 		}

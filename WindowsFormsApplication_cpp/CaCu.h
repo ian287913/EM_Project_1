@@ -19,7 +19,7 @@ public:
 };
 
 //	Exception
-class myException// : public exception
+class myException: public std::exception
 {
 public:
 	myException(std::string content) : Content(content) {}

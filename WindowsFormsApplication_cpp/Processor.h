@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include "Vec.h"
+#include"CaCu.h"
 
 static class Processor
 {
