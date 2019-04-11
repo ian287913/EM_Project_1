@@ -40,24 +40,43 @@ std::string Processor::Start(std::vector<std::string> input)
 						break;
 					}
 				}
-				switch (func)
+				double dout = 0.0;
+				Vector vout;
+				std::string sout = "";
+				std::ostringstream strs;
+				try
 				{
-				case 0:		// norm 
+					switch (func)
+					{
+					case 0:		// norm 
+						vout = getSource(input[1]);
+						dout = CaCu::Norm(vout);
+						strs << dout;
+						sout += strs.str();
+						return sout;
+					case 1:		// normlz
+						vout = getSource(input[1]);
+						vout = CaCu::Normalize(vout);
+						sout = VectorToString(vout);
+						return sout;
+					case 2:		// cross
 
-				case 1:		// normlz
-				case 2:		// cross
-				case 3:		// comp
-				case 4:		// proj
-				case 5:		// area
-				case 6:		// ispar
-				case 7:		// isorth
-				case 8:		// angle
-				case 9:		// pn
-				case 10:	// islin
-				case 11:	// ob 
-				default:
-					return "This function is invalid for now.";
-					break;
+					case 3:		// comp
+					case 4:		// proj
+					case 5:		// area
+					case 6:		// ispar
+					case 7:		// isorth
+					case 8:		// angle
+					case 9:		// pn
+					case 10:	// islin
+					case 11:	// ob 
+					default:
+						return "This function is invalid for now.";
+						break;
+					}
+				}
+				catch (const std::exception& e)
+				{
 				}
 				return "function end.";
 			}
