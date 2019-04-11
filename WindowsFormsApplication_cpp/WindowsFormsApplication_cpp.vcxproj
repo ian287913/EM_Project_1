@@ -138,12 +138,15 @@
   <ItemGroup>
     <ClCompile Include="DataManager.cpp" />
     <ClCompile Include="DotNetUitilities.cpp" />
+    <ClCompile Include="Processor.cpp" />
     <ClCompile Include="WindowsForm.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CaCu.h" />
     <ClInclude Include="DataManager.h" />
     <ClInclude Include="DotNetUtilities.h" />
+    <ClInclude Include="Processor.h" />
+    <ClInclude Include="Vec.h" />
     <ClInclude Include="WindowsForm.h">
       <FileType>CppForm</FileType>
     </ClInclude>
