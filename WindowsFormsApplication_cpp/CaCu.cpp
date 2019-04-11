@@ -145,3 +145,60 @@ const double CaCu::Component(const Vector & v1, const Vector & v2)
 	Component /= Length(v2);
 	return Component;
 }
+
+const Vector CaCu::Projection(const Vector & v1, const Vector & v2)
+{
+	Vector tempVector = Vector();
+	tempVector.Data.clear();
+	if (v1.Data.size() == 0 || v2.Data.size() == 0)
+		return tempVector;	//	Zero
+
+	if(Length(v2) == 0)
+		return tempVector;	//	zero
+
+	return Scale(v2, (Dot(v1, v2) / Dot(v2, v2)));
+}
+
+const double CaCu::Triangle(const Vector & v1, const Vector & v2)
+{
+	if (v1.Data.size() == 0 || v2.Data.size() == 0)
+		return 0.0;
+	if (v1.Data.size() != v2.Data.size())
+		throw new std::exception("(Triangle) Different dimention");
+
+	return (Length(Cross(v1, v2)) / 2.0);
+}
+
+const bool CaCu::IsParallel(const Vector & v1, const Vector & v2)
+{
+	if (v1.Data.size() == 0 || v2.Data.size() == 0)
+		return true;
+	if (v1.Data.size() != v2.Data.size())
+		throw new std::exception("(IsParallel) Different dimention");
+
+	Vector tempV1 = Normalize(v1), tempV2 = Normalize(v2);
+	//	make it same way
+	if (tempV1.Data[0] != tempV2.Data[0])
+		tempV1 = Neg(tempV1);
+
+	//	if any difference
+	for (int i = 0; i < v1.Data.size(); i++)
+		if (v1.Data[i] != v2.Data[i])
+			return false;
+	//	else
+	return true;
+}
+
+const bool CaCu::IsOrthogonal(const Vector & v1, const Vector & v2)
+{
+	return (Dot(v1, v2) == 0.0);
+}
+
+const double CaCu::Angle(const Vector & v1, const Vector & v2)
+{
+	double length1 = Length(v1), length2 = Length(v2);
+	if (length1 == 0 || length2 == 0)
+		throw new std::exception("(Angle) No zero vector allowed");
+
+	return acos((Dot(v1, v2) / (length1*length2))) *180.0 / PI;
+}
