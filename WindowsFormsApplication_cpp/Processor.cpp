@@ -16,6 +16,8 @@ std::vector<std::string> Processor::FunctionList = {
 };
 std::vector<std::string> Processor::priority = { "*", "/", "%", "+", "-" };
 std::vector<Vector> Processor::SourceVectors = std::vector<Vector>();
+std::vector<Matrix> Processor::SourceMatrices = std::vector<Matrix>();
+bool Processor::isVector = true;
 
 std::string Processor::Start(std::vector<std::string> input)
 {

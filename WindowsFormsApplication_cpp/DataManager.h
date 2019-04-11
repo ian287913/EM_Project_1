@@ -9,6 +9,7 @@
 class DataManager
 {
 private:
+	std::vector<Matrix> Matrices;
 	//儲存向量資料
 	std::vector<Vector> Vectors;
 	//紀錄向量ID，用於控管
@@ -18,9 +19,11 @@ private:
 public:
 	DataManager();
 	//讀取向量資料
-	bool LoadVectorData();
+	bool LoadVectorData(bool isVec);
 	//取得向量資料
 	std::vector<Vector> GetVectors();
+	//取得矩陣資料
+	std::vector<Matrix> GetMatrices();
 	//設置檔案路徑名稱
 	void SetFileName(std::string fileName);
 };
