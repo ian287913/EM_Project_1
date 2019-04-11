@@ -202,14 +202,14 @@ std::string Processor::Start(std::vector<std::string> input)
 						}
 					}
 					if (stack.size() != 1)
-						throw new std::exception("Stack error");
+						throw std::exception("Stack error");
 					output = VectorToString(stack[0]);
 				}
 				catch (const myException e)
 				{
 					output = "Cacu error: " + e.Content;
 				}
-				catch (const std::exception& e)
+				catch (std::exception& e)
 				{
 					output = "Processor error: ";
 					output += e.what();
@@ -312,7 +312,7 @@ std::string Processor::Start(std::vector<std::string> input)
 						}
 					}
 					if (stack.size() != 1)
-						throw new std::exception("Stack error");
+						throw std::exception("Stack error");
 					output = MatrixToString(stack[0]);
 				}
 				catch (const myException e)
