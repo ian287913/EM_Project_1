@@ -166,8 +166,7 @@ const double CaCu::Triangle(const Vector & v1, const Vector & v2)
 		throw new std::exception("(Triangle) Different dimention");
 
 
-	
-	return (Length(v2) * sin(Angle(v1, v2) * Length(v1) / 2.0));
+	return (Length(v2) * sin(Angle(v1, v2)/180.0 * PI) * Length(v1) / 2.0);
 }
 
 const bool CaCu::IsParallel(const Vector & v1, const Vector & v2)
