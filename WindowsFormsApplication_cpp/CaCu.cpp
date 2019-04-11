@@ -110,3 +110,38 @@ const Vector CaCu::Cross(const Vector & v1, const Vector & v2)
 
 	return tempVector;
 }
+
+const double CaCu::Length(const Vector & v)
+{
+	double length = 0.0;
+	for (int i = 0; i < v.Data.size(); i++)
+		length += (v.Data[i] * v.Data[i]);
+	return sqrt(length);
+}
+
+const double CaCu::Dot(const Vector & v1, const Vector & v2)
+{
+	if (v1.Data.size() == 0 || v2.Data.size() == 0)
+		return 0.0;
+	if (v1.Data.size() != v2.Data.size())
+		throw new myException("(Dot) Different dimention");
+
+	double sum = 0;
+	for (int i = 0; i < v1.Data.size(); i++)
+		sum += v1.Data[i] * v2.Data[i];
+	return sum;
+}
+
+const double CaCu::Component(const Vector & v1, const Vector & v2)
+{
+	if (v1.Data.size() != v2.Data.size())
+		throw new myException("(Component) Different dimention");
+
+	double Component = Dot(v1, v2);
+
+	if (Length(v2) == 0.0)
+		return 0.0;
+	//	else
+	Component /= Length(v2);
+	return Component;
+}

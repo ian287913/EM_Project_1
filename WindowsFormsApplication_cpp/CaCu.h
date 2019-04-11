@@ -16,6 +16,10 @@ public:
 	static const double Norm(const Vector &v);
 	static const Vector Normalize(const Vector &v);
 	static const Vector Cross(const Vector &v1, const Vector &v2);	//	Only support R3 x R3
+	static const double Length(const Vector &v);
+	static const double Dot(const Vector &v1, const Vector &v2);
+	static const double Component(const Vector &v1, const Vector &v2);
+
 };
 
 //	Exception
