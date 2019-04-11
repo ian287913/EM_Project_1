@@ -17,6 +17,8 @@ bool DataManager::LoadVectorData()
 	}
 	else
 	{
+		Vectors.clear();
+		VectorVariableIndex = 0;
 		//標記當前讀取向量ID
 		int currentLoadVectorID = 0;
 		//定義向量資料暫存變數

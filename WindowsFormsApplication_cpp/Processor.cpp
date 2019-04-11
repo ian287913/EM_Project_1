@@ -41,7 +41,7 @@ std::string Processor::Start(std::vector<std::string> input)
 					}
 				}
 				double dout = 0.0;
-				Vector vout;
+				Vector vout, vout0;
 				std::string sout = "";
 				std::ostringstream strs;
 				try
@@ -60,8 +60,18 @@ std::string Processor::Start(std::vector<std::string> input)
 						sout = VectorToString(vout);
 						return sout;
 					case 2:		// cross
-
+						vout = getSource(input[1]);
+						vout0 = getSource(input[2]);
+						vout = CaCu::Cross(vout, vout0);
+						sout = VectorToString(vout);
+						return sout;
 					case 3:		// comp
+						vout = getSource(input[1]);
+						vout0 = getSource(input[2]);
+						dout = CaCu::Component(vout, vout0);
+						strs << dout;
+						sout += strs.str();
+						return sout;
 					case 4:		// proj
 					case 5:		// area
 					case 6:		// ispar
