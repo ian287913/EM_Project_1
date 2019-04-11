@@ -165,7 +165,9 @@ const double CaCu::Triangle(const Vector & v1, const Vector & v2)
 	if (v1.Data.size() != v2.Data.size())
 		throw new std::exception("(Triangle) Different dimention");
 
-	return (Length(Cross(v1, v2)) / 2.0);
+
+	
+	return (Length(v2) * sin(Angle(v1, v2) * Length(v1) / 2.0));
 }
 
 const bool CaCu::IsParallel(const Vector & v1, const Vector & v2)
@@ -180,12 +182,16 @@ const bool CaCu::IsParallel(const Vector & v1, const Vector & v2)
 	if (tempV1.Data[0] != tempV2.Data[0])
 		tempV1 = Neg(tempV1);
 
+	bool isPar = true;
 	//	if any difference
 	for (int i = 0; i < v1.Data.size(); i++)
-		if (v1.Data[i] != v2.Data[i])
-			return false;
+	{
+		//std::cout << tempV1.Data[i] - tempV2.Data[i]<< "\n";
+		if (abs(tempV1.Data[i] - tempV2.Data[i]) > 0.000001)
+			isPar = false;
+	}
 	//	else
-	return true;
+	return isPar;
 }
 
 const bool CaCu::IsOrthogonal(const Vector & v1, const Vector & v2)
