@@ -38,10 +38,10 @@ const int CaCuMw::Rank(const Matrix& input)
 			{
 				if (r != row)
 				{
-					double scale = temp.Data[r][row] / temp.Data[row][row] * -1;
+					double scale = -temp.Data[r][row] / temp.Data[row][row];
 					std::vector<double> tempv = scaleVector(temp.Data[row], scale);
 					temp.Data[r] = addVector(temp.Data[r], tempv);
-					temp.Data[r][row] = 0;
+					temp.Data[r][row] = 0;	//確保為0
 				}
 			}
 		}
@@ -49,7 +49,7 @@ const int CaCuMw::Rank(const Matrix& input)
 		{
 			// 找到底下能夠替代該 row 的 其他 row
 			bool hasNZ = false;
-			for (int r = row + 1; r < rank; r++)
+			for (int r = row + 1; r < temp.Data.size(); r++)
 				if (temp.Data[r][row] != 0)
 				{
 					// 有找到: 直接換
@@ -62,15 +62,13 @@ const int CaCuMw::Rank(const Matrix& input)
 			{
 				// 沒找到: rank扣掉1
 				rank -= 1;
-				// 與最後交換
-				for (int r = 0; r < rank; r++)
+				// 取成最後column值
+				for (int r = 0; r < temp.Data.size(); r++)
 				{
-					double tempd = temp.Data[r][rank];
-					temp.Data[r][rank] = temp.Data[r][row];
-					temp.Data[r][row] = tempd;
+					temp.Data[r][row] = temp.Data[r][rank];
 				}
 			}
-			row--;
+			row -= 1;
 		}
 	}
 
@@ -135,7 +133,7 @@ const std::vector<double> CaCuMw::scaleVector(const std::vector<double> input, d
 	for (int i = 0; i < output.size(); i++)
 	{
 		if(output[i] != 0)
-			output[i] *= scale;
+			output[i] = output[i] * scale;
 	}
 	return output;
 }
@@ -146,6 +144,6 @@ const std::vector<double> CaCuMw::addVector(const std::vector<double> v1, const 
 	std::vector<double> output = v1;
 	for (int i = 0; i < output.size(); i++)
 		if (output[i] != 0 || v2[i] != 0)
-			output[i] += v2[i];
+			output[i] = output[i] + v2[i];
 	return output;
 }
