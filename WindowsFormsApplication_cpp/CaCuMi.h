@@ -16,7 +16,8 @@ public:
 	//	行列式
 	static const double Determinant(const Matrix& M);
 	static const Matrix Cofactors(const Matrix& M);
-
+	//trans
+	static const Matrix Transpose(Matrix& input);
 
 	//	若R或C大小為零則丟例外
 	static void ZeroCheck(const Matrix& M);

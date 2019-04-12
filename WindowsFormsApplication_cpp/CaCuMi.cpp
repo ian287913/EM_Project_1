@@ -99,6 +99,22 @@ const Matrix CaCuMi::Cofactors(const Matrix & M)
 	return tempMatrix;
 }
 
+const Matrix CaCuMi::Transpose(Matrix& input)
+{
+	if (input.Data.size() < 1)
+		throw std::exception("matrix format error");
+	Matrix output(input.Data[0].size(), input.Data.size());
+
+	for (int i = 0; i < input.Data.size(); i++)
+	{
+		for (int j = 0; j < input.Data[i].size(); j++)
+		{
+			output.Data[j][i] = input.Data[i][j];
+		}
+	}
+	return output;
+}
+
 void CaCuMi::ZeroCheck(const Matrix & M)
 {
 	if (M.Data.size() <= 0)

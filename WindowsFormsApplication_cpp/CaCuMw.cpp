@@ -1,6 +1,6 @@
 #include"CaCuMw.h"
 
-const Matrix CaCuMw::Add(Matrix m1, Matrix m2)
+const Matrix CaCuMw::Add(Matrix& m1, Matrix& m2)
 {
 	Matrix output;
 	if (m1.Data.size() != m2.Data.size())
@@ -15,21 +15,6 @@ const Matrix CaCuMw::Add(Matrix m1, Matrix m2)
 			temprow.push_back(m1.Data[i][j] + m2.Data[i][j]);
 		}
 		output.Data.push_back(temprow);
-	}
-	return output;
-}
-const Matrix CaCuMw::Transpose(Matrix input)
-{
-	if (input.Data.size() < 1)
-		throw std::exception("matrix format error");
-	Matrix output(input.Data[0].size(),input.Data.size());
-
-	for (int i = 0; i < input.Data.size(); i++)
-	{
-		for (int j = 0; j < input.Data[i].size(); j++)
-		{
-			output.Data[j][i] = input.Data[i][j];
-		}
 	}
 	return output;
 }

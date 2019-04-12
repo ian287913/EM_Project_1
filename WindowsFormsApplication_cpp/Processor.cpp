@@ -243,7 +243,7 @@ std::string Processor::Start(std::vector<std::string> input)
 						case 0:		// rank
 						case 1:		// trans
 							mout0 = getSourceM(input[1]);
-							sout = MatrixToString(CaCuMw::Transpose(mout0));
+							sout = MatrixToString(CaCuMi::Transpose(mout0));
 							return sout;
 						case 2:		// sls
 						case 3:		// det

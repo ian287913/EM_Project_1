@@ -10,7 +10,6 @@ static class CaCuMw
 {
 public:
 	//¥[
-	static const Matrix Add(Matrix m1, Matrix m2);
-	//trans
-	static const Matrix Transpose(Matrix input);
+	static const Matrix Add(Matrix& m1, Matrix& m2);
+	
 };
