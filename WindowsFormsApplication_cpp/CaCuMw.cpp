@@ -1,6 +1,6 @@
 #include"CaCuMw.h"
 
-const Matrix CaCuMw::Add(Matrix& m1, Matrix& m2)
+const Matrix CaCuMw::Add(const Matrix& m1, const Matrix& m2)
 {
 	Matrix output;
 	if (m1.Data.size() != m2.Data.size())

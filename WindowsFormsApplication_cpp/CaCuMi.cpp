@@ -99,7 +99,7 @@ const Matrix CaCuMi::Cofactors(const Matrix & M)
 	return tempMatrix;
 }
 
-const Matrix CaCuMi::Transpose(Matrix& input)
+const Matrix CaCuMi::Transpose(const Matrix& input)
 {
 	if (input.Data.size() < 1)
 		throw std::exception("matrix format error");
@@ -113,6 +113,16 @@ const Matrix CaCuMi::Transpose(Matrix& input)
 		}
 	}
 	return output;
+}
+
+const Matrix CaCuMi::Adjoint(const Matrix & M)
+{
+	return Transpose(Cofactors(M));
+}
+
+const Matrix CaCuMi::Inverse(const Matrix & M)
+{
+	return Multiply(Adjoint(M), (1.0 / Determinant(M)));
 }
 
 void CaCuMi::ZeroCheck(const Matrix & M)

@@ -17,7 +17,9 @@ public:
 	static const double Determinant(const Matrix& M);
 	static const Matrix Cofactors(const Matrix& M);
 	//trans
-	static const Matrix Transpose(Matrix& input);
+	static const Matrix Transpose(const Matrix& M);
+	static const Matrix Adjoint(const Matrix& M);
+	static const Matrix Inverse(const Matrix& M);
 
 	//	若R或C大小為零則丟例外
 	static void ZeroCheck(const Matrix& M);
