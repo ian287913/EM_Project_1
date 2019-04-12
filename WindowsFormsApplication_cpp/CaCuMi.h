@@ -5,6 +5,7 @@
 #include<exception>
 #include"Vec.h"
 #include "Matrix.h"
+#include "CaCuMw.h"
 
 static class CaCuMi
 {

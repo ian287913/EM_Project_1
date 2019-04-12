@@ -58,33 +58,37 @@ const double CaCuMi::Determinant(const Matrix & M)
 	if (row == 1)
 		return (M.Data[0][0]* M.Data[1][1] - M.Data[1][0]* M.Data[0][1]);
 
-	//	Matrix with double**
-	double **doubleM = new double*[row];
-	for (int r = 0; r < row; r++)
+	double value = 1.0;
+
+	Matrix temp = M;
+	//變成上三角
+	for (int R = 0; R < row; R++)
 	{
-		doubleM[r] = new double[row];
-		for (int c = 0; c < row; c++)
-		{
-			doubleM[r][c] = M.Data[r][c];
+		// 消去
+		for (int r = R + 1; r < row; r++) {
+			double scale = -temp.Data[r][R] / temp.Data[R][R];
+			for (int c = R; c < row; c++)
+			{
+				temp.Data[r][c] += temp.Data[R][c] * scale;
+			}
 		}
+		value *= temp.Data[R][R];
 	}
 
-	//double value = 0.0;
+	return value;
 
-	//std::cout << "\n";
+	////	Matrix with double**
+	//double **doubleM = new double*[row];
 	//for (int r = 0; r < row; r++)
 	//{
-	//	Matrix tempMatrix = Matrix(M);
-	//	//	cut	a column
-	//	for (int cut = 0; cut < row; cut++)
-	//		tempMatrix.Data[cut].erase(tempMatrix.Data[cut].begin());
-	//	//	cut a row
-	//	tempMatrix.Data.erase(tempMatrix.Data.begin() + r);
-	//	//	value of each
-	//	value += Laplace(tempMatrix) * ((r%2 == 0)?(M.Data[r][0]):(-(M.Data[r][0])));
+	//	doubleM[r] = new double[row];
+	//	for (int c = 0; c < row; c++)
+	//	{
+	//		doubleM[r][c] = temp.Data[r][c];
+	//	}
 	//}
 
-	return Laplace(doubleM, row);
+	//return Laplace(doubleM, row);
 }
 
 const double CaCuMi::Laplace(double **M, const int& size)
@@ -116,6 +120,9 @@ const double CaCuMi::Laplace(double **M, const int& size)
 
 	for (row = 0; row < size; row++)
 	{
+		if (M[row][0] == 0)
+			continue;
+
 		for (r = 0; r < (size - 1); r++)
 		{
 			if (r < row)
@@ -134,49 +141,11 @@ const double CaCuMi::Laplace(double **M, const int& size)
 			}
 		}
 		value += Laplace(subM, (size - 1)) * ((row % 2 == 0) ? (M[row][0]) : (-(M[row][0])));
-
-
-		////	cut	a column
-		//for (int cut = 0; cut < tempMatrix.Data.size(); cut++)
-		//	tempMatrix.Data[cut].erase(tempMatrix.Data[cut].begin());
-		////	value of each
-		//if ((M.Data[r][0]) == 0.0)
-		//	continue;
-		//value += Laplace(tempMatrix) * ((r % 2 == 0) ? (M.Data[r][0]) : (-(M.Data[r][0])));
+		
 	}
 	return value;
 }
-//
-/////
-//int determinantsol(int a, int** Matrix)
-//{
-//	int ** Matrixitem = new int*[a - 1];
-//	int sum = 0, i = 0, p = 0, q = 0;
-//	if (a == 1) 
-//	{
-//		sum = Matrix[0][0];
-//	}
-//	else 
-//	{
-//		for (i = 0; i < a - 1; i++) 
-//		{
-//			Matrixitem[i] = new int[a - 1];
-//		}
-//		for (i = 0; i < a; i++) 
-//		{
-//			for (p = 0; p < a - 1; p++)
-//			{
-//				for (q = 0; q < a - 1; q++) 
-//				{
-//					if (q < i) Matrixitem[p][q] = Matrix[p + 1][q];
-//					if (q >= i) Matrixitem[p][q] = Matrix[p + 1][q + 1];
-//				}
-//			}
-//			sum = sum + (pow((double)-1, i % 2) * Matrix[0][i] * determinantsol(a - 1, Matrixitem));//1和-1
-//		}
-//	}
-//	return sum;
-//}
+
 const Matrix CaCuMi::Cofactors(const Matrix & M)
 {
 	int row = M.Data.size(), col = M.Data[0].size();
