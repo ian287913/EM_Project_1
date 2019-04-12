@@ -288,7 +288,7 @@ std::string Processor::Start(std::vector<std::string> input)
 								stack.pop_back();
 								m2 = stack[stack.size() - 1];
 								stack.pop_back();
-								// result = CaCu::Add(v1, v2);
+								result = CaCuMw::Add(m1, m2);
 								stack.push_back(result);
 							}
 							if (postfix[i] == "*")
@@ -411,7 +411,7 @@ std::string Processor::VectorToString(Vector input)
 }
 std::string Processor::MatrixToString(Matrix input)
 {
-	std::string output = "[";
+	std::string output;
 	for (int i = 0; i < input.Data.size(); i++)
 	{
 		for (int j = 0; j < input.Data[i].size(); j++)
@@ -420,9 +420,8 @@ std::string Processor::MatrixToString(Matrix input)
 			if (j != input.Data[i].size() - 1)
 				output += ", ";
 		}
-		output += "\n";
+		output += (const char*)(System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(System::Environment::NewLine)).ToPointer();
 	}
-	output += "]";
 	return output;
 }
 const Vector Processor::getSource(std::string vecName)
