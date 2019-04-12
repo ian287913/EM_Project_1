@@ -30,6 +30,7 @@ std::vector<std::string> Processor::priority = { "*", "/", "%", "+", "-" };
 std::vector<Vector> Processor::SourceVectors = std::vector<Vector>();
 std::vector<Matrix> Processor::SourceMatrices = std::vector<Matrix>();
 bool Processor::isVector = true;
+std::string Processor::endl = (const char*)(System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(System::Environment::NewLine)).ToPointer();
 
 std::string Processor::Start(std::vector<std::string> input)
 {
@@ -298,7 +299,7 @@ std::string Processor::Start(std::vector<std::string> input)
 								stack.pop_back();
 								m2 = stack[stack.size() - 1];
 								stack.pop_back();
-								result = CaCuMi::Multiply(m1, m2);
+								result = CaCuMi::Multiply(m2, m1);
 								stack.push_back(result);
 							}
 						}

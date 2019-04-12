@@ -17,6 +17,7 @@ public:
 	static std::vector<Vector> SourceVectors;
 	static std::vector<Matrix> SourceMatrices;
 	static bool isVector;
+	static std::string endl;
 
 	static std::string Start(std::vector<std::string> input);
 	static std::vector<std::string> InfixToPostfix(std::vector<std::string> input);
