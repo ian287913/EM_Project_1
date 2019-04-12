@@ -19,9 +19,9 @@ inline Matrix::Matrix()
 
 }
 
-Matrix::Matrix(int row, int col)
+inline Matrix::Matrix(int row, int col)
 {
 	Data = std::vector< std::vector<double>>(row);
-	for (int i = 0; i < r; i++)
+	for (int i = 0; i < row; i++)
 		Data[i] = std::vector<double>(col);
 }

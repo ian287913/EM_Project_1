@@ -205,10 +205,6 @@ std::string Processor::Start(std::vector<std::string> input)
 						throw std::exception("Stack error");
 					output = VectorToString(stack[0]);
 				}
-				catch (const myException e)
-				{
-					output = "Cacu error: " + e.Content;
-				}
 				catch (std::exception& e)
 				{
 					output = "Processor error: ";
@@ -245,6 +241,9 @@ std::string Processor::Start(std::vector<std::string> input)
 						{
 						case 0:		// rank
 						case 1:		// trans
+							mout0 = getSourceM(input[1]);
+							sout = MatrixToString(CaCuMw::Transpose(mout0));
+							return sout;
 						case 2:		// sls
 						case 3:		// det
 						case 4:		// inv
@@ -260,6 +259,7 @@ std::string Processor::Start(std::vector<std::string> input)
 					}
 					catch (const std::exception& e)
 					{
+						return e.what();
 					}
 					return "function end.";
 				}
@@ -298,26 +298,14 @@ std::string Processor::Start(std::vector<std::string> input)
 								stack.pop_back();
 								m2 = stack[stack.size() - 1];
 								stack.pop_back();
-								/*if (v1.Data.size() > 1)
-								{
-									Vector re;
-									re.Data.clear();
-									re.Data.push_back(CaCu::Dot(v2, v1));
-									result = re;
-								}
-								else
-									result = CaCu::Scale(v2, v1);
-								stack.push_back(result);*/
+								result = CaCuMi::Multiply(m1, m2);
+								stack.push_back(result);
 							}
 						}
 					}
 					if (stack.size() != 1)
 						throw std::exception("Stack error");
 					output = MatrixToString(stack[0]);
-				}
-				catch (const myException e)
-				{
-					output = "Cacu error: " + e.Content;
 				}
 				catch (const std::exception& e)
 				{
