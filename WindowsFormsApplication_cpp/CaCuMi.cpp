@@ -43,29 +43,106 @@ const Matrix CaCuMi::Multiply(const Matrix & M, const double & scale)
 
 const double CaCuMi::Determinant(const Matrix & M)
 {
-	int row = M.Data.size(), col = M.Data[0].size();
 	//	Zero
-	if (row == 0 || col == 0)
+	if (M.Data.size() == 0)
 		throw std::exception("(Determinant) 0-dim unacceptable");
-	//	Vector-like
-	if (row == 1 || col == 1)
-		return 0.0;
-	double value = 0.0;
-	double add = 1.0;
-	double sub = -1.0;
 
-	for (int r = 0; r < row; r++)
+	int row = M.Data.size(), col = M.Data[0].size();
+	//	Non-square
+	if (row != col)
+		throw std::exception("(Determinant) Non-Square unacceptable");
+	//	1x1
+	if (row == 1)
+		return M.Data[0][0];
+	//	2x2
+	if (row == 1)
+		return (M.Data[0][0]* M.Data[1][1] - M.Data[1][0]* M.Data[0][1]);
+
+	double value = 1.0;
+
+	Matrix temp = M;
+	//變成上三角
+	for (int R = 0; R < row; R++)
 	{
-		add = 1.0;
-		sub = -1.0;
-		for (int c = 0; c < col; c++)
-		{
-			add *= M.Data[(r + c) % row][c];
-			sub *= M.Data[(r - c) % row][c];
+		// 消去
+		for (int r = R + 1; r < row; r++) {
+			double scale = -temp.Data[r][R] / temp.Data[R][R];
+			for (int c = R; c < row; c++)
+			{
+				temp.Data[r][c] += temp.Data[R][c] * scale;
+			}
 		}
-		value += (add + sub);
+		value *= temp.Data[R][R];
 	}
 
+	return value;
+
+	////	Matrix with double**
+	//double **doubleM = new double*[row];
+	//for (int r = 0; r < row; r++)
+	//{
+	//	doubleM[r] = new double[row];
+	//	for (int c = 0; c < row; c++)
+	//	{
+	//		doubleM[r][c] = temp.Data[r][c];
+	//	}
+	//}
+
+	//return Laplace(doubleM, row);
+}
+
+const double CaCuMi::Laplace(double **M, const int& size)
+{
+	if (size == 3)
+	{
+		//	三階
+		return (
+			M[0][0] * M[1][1] * M[2][2] +
+			M[0][1] * M[1][2] * M[2][0] +
+			M[0][2] * M[1][0] * M[2][1] -
+			M[0][2] * M[1][1] * M[2][0] -
+			M[0][0] * M[1][2] * M[2][1] -
+			M[0][1] * M[1][0] * M[2][2]
+			);
+	}
+
+	//std::cout << size << "\n";
+
+	double value = 0.0;
+	double **subM = new double*[size - 1];
+
+	int c, r, row;
+	//	init subM
+	for (int c = 0; c < size - 1; c++)
+	{
+		subM[c] = new double[size - 1];
+	}
+
+	for (row = 0; row < size; row++)
+	{
+		if (M[row][0] == 0)
+			continue;
+
+		for (r = 0; r < (size - 1); r++)
+		{
+			if (r < row)
+			{
+				for (c = 0; c < (size - 1); c++)
+				{
+					subM[r][c] = M[r][c+1];
+				}
+			}
+			else
+			{
+				for (c = 0; c < (size - 1); c++)
+				{
+					subM[r][c] = M[r+1][c+1];
+				}
+			}
+		}
+		value += Laplace(subM, (size - 1)) * ((row % 2 == 0) ? (M[row][0]) : (-(M[row][0])));
+		
+	}
 	return value;
 }
 
@@ -73,7 +150,7 @@ const Matrix CaCuMi::Cofactors(const Matrix & M)
 {
 	int row = M.Data.size(), col = M.Data[0].size();
 	//	Zero
-	if (row < 2 || col <2)
+	if (row < 2 || col < 2)
 		throw std::exception("(Cofactors) 0or1 dim unacceptable");
 
 	Matrix tempMatrix = Matrix(M);
