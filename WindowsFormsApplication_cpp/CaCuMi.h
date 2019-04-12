@@ -8,11 +8,14 @@
 
 static class CaCuMi
 {
+public:
 	static const Matrix Multiply(const Matrix& M1	, const Matrix& M2);
 	//	dont use dis
 	static const Matrix Multiply(const Matrix& M	, const Vector& V);	
 	static const Matrix Multiply(const Matrix& M	, const double& scale);
 
+	static const double Determinant(const Matrix& M);
+	static const Matrix Cofactors(const Matrix& M);
 
 
 	//	若R或C大小為零則丟例外
