@@ -16,6 +16,7 @@ public:
 	static const Matrix Multiply(const Matrix& M	, const double& scale);
 	//	¦æ¦C¦¡
 	static const double Determinant(const Matrix& M);
+	static const double Determinant(double **M, int size);
 	static const double Laplace(double **M, const int& size);	//	Helper
 	static const Matrix Cofactors(const Matrix& M);
 	//trans

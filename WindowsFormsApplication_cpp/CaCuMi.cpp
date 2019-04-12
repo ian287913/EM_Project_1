@@ -38,7 +38,7 @@ const Matrix CaCuMi::Multiply(const Matrix & M, const double & scale)
 		for (int c = 0; c < col; c++)
 			tempMatrix.Data[r][c] *= scale;
 
-	return Matrix();
+	return tempMatrix;
 }
 
 const double CaCuMi::Determinant(const Matrix & M)
@@ -61,9 +61,32 @@ const double CaCuMi::Determinant(const Matrix & M)
 	double value = 1.0;
 
 	Matrix temp = M;
+	std::vector<double> tempVector;
+
 	//變成上三角
 	for (int R = 0; R < row; R++)
 	{
+		//	0
+		if (temp.Data[R][R] == 0)
+		{
+			for (int r = R + 1; r < row; r++) 
+			{
+				if (temp.Data[r][R] != 0.0) 
+				{
+					value *= (-1.0);
+					//	Switch
+					tempVector = temp.Data[r];
+					temp.Data[r] = temp.Data[R];
+					temp.Data[R] = tempVector;
+
+					break;
+				}
+			}
+		}
+
+
+		if (temp.Data[R][R] == 0.0)
+			return 0.0;
 		// 消去
 		for (int r = R + 1; r < row; r++) {
 			double scale = -temp.Data[r][R] / temp.Data[R][R];
@@ -76,19 +99,68 @@ const double CaCuMi::Determinant(const Matrix & M)
 	}
 
 	return value;
+}
 
-	////	Matrix with double**
-	//double **doubleM = new double*[row];
-	//for (int r = 0; r < row; r++)
-	//{
-	//	doubleM[r] = new double[row];
-	//	for (int c = 0; c < row; c++)
-	//	{
-	//		doubleM[r][c] = temp.Data[r][c];
-	//	}
-	//}
+const double CaCuMi::Determinant(double **M, int size)
+{
+	double value = 1.0;
 
-	//return Laplace(doubleM, row);
+	double **temp = new double*[size];
+	for (int r = 0; r < size; r++)
+	{
+		temp[r] = new double[size];
+		for (int c = 0; c < size; c++)
+			temp[r][c] = M[r][c];
+	}
+
+	//變成上三角
+	for (int R = 0; R < size; R++)
+	{
+		//	0
+		if (temp[R][R] == 0.0)
+		{
+			for (int r = R + 1; r < size; r++)
+			{
+				if (temp[r][R] != 0.0)
+				{
+					value *= (-1.0);
+					//	Switch
+					double *tempVector = new double[size];
+					int i;
+					for(i = 0; i < size; i++)
+						tempVector[i] = temp[r][i];
+					for (i = 0; i < size; i++)
+						temp[r][i] = temp[R][i];
+					for (i = 0; i < size; i++)
+						temp[r][i] = temp[R][i];
+					for (i = 0; i < size; i++)
+						temp[R][i] = tempVector[i];
+					delete[] tempVector;
+					break;
+				}
+			}
+		}
+
+		if (temp[R][R] == 0.0)
+		{
+			value = 0.0;
+			break;
+		}
+		// 消去
+		for (int r = R + 1; r < size; r++) {
+			double scale = -temp[r][R] / temp[R][R];
+			for (int c = R; c < size; c++)
+			{
+				temp[r][c] += temp[R][c] * scale;
+			}
+		}
+		value *= temp[R][R];
+	}
+
+	for (int d = 0; d < size; d++)
+		delete[] temp[d];
+	delete[] temp;
+	return value;
 }
 
 const double CaCuMi::Laplace(double **M, const int& size)
@@ -150,23 +222,45 @@ const Matrix CaCuMi::Cofactors(const Matrix & M)
 {
 	int row = M.Data.size(), col = M.Data[0].size();
 	//	Zero
-	if (row < 2 || col < 2)
-		throw std::exception("(Cofactors) 0or1 dim unacceptable");
+	if (row < 2 || col < 2 || col != row)
+		throw std::exception("(Cofactors) dim unacceptable");
 
 	Matrix tempMatrix = Matrix(M);
+	//	
+	double **temp = new double*[row-1];
+	for (int r = 0; r < row-1; r++)
+		temp[r] = new double[row-1];
 
 	for (int r = 0; r < row; r++)
 	{
 		for (int c = 0; c < col; c++)
 		{
-			Matrix determinTemp = Matrix(M);
-			//	cut	a row
-			determinTemp.Data.erase(determinTemp.Data.begin() + c);
-			//	cut	a column
-			for (int cut = 0; cut < determinTemp.Data.size(); cut++)
-				determinTemp.Data[cut].erase(determinTemp.Data[cut].begin() + r);
-			//	do Determinant
-			tempMatrix.Data[r][c] = Determinant(determinTemp);
+			for (int cutR = 0; cutR < row-1; cutR++)
+			{
+				for (int cutC = 0; cutC < col-1; cutC++)
+				{
+					if (cutR == r)
+					{
+
+					}
+					if (cutC == c)
+					{
+
+					}
+					temp[cutR][cutC] = M.Data[(cutR >= r ? (cutR + 1) : cutR)][(cutC >= c ? (cutC + 1) : cutC)];
+				}
+			}
+
+
+			////Matrix determinTemp = Matrix(M);
+			//////	cut	a row
+			////determinTemp.Data.erase(determinTemp.Data.begin() + c);
+			//////	cut	a column
+			////for (int cut = 0; cut < determinTemp.Data.size(); cut++)
+			////	determinTemp.Data[cut].erase(determinTemp.Data[cut].begin() + r);
+			//////	do Determinant
+			////tempMatrix.Data[r][c] = Determinant(determinTemp);
+			tempMatrix.Data[r][c] = Determinant(temp,row-1);
 			//	1 or -1
 			if (((r + c) % 2) != 0)
 				tempMatrix.Data[r][c] *= (-1.0);
@@ -199,6 +293,7 @@ const Matrix CaCuMi::Adjoint(const Matrix & M)
 
 const Matrix CaCuMi::Inverse(const Matrix & M)
 {
+	double asdf = (1.0 / Determinant(M));
 	return Multiply(Adjoint(M), (1.0 / Determinant(M)));
 }
 
