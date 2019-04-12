@@ -5,6 +5,23 @@
 //定義向量資料結構
 struct Matrix
 {
-	std::string Name;
+public:
+	Matrix();
+	//	init the size of Rows and Columns
+	Matrix(int row, int col);
+
+	std::string Name = "";
 	std::vector< std::vector<double>> Data;
 };
+
+inline Matrix::Matrix()
+{
+
+}
+
+Matrix::Matrix(int row, int col)
+{
+	Data = std::vector< std::vector<double>>(row);
+	for (int i = 0; i < r; i++)
+		Data[i] = std::vector<double>(col);
+}

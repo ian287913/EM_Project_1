@@ -29,11 +29,3 @@ public:
 	static const double Angle(const Vector &v1, const Vector &v2);
 	static const std::vector<Vector> Orthonormal(const std::vector<Vector> &vs, int size);
 };
-
-//	Exception
-class myException : public std::exception
-{
-public:
-	myException(std::string content) : Content(content) {}
-	std::string Content;
-};
