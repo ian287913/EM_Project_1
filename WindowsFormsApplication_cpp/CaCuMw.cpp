@@ -76,6 +76,58 @@ const int CaCuMw::Rank(const Matrix& input)
 
 	return rank;
 }
+const std::vector<double> CaCuMw::solveLin(const Matrix& input, const Matrix& input1)
+{
+	if (input.Data.size() < 1)
+		throw std::exception("matrix format error");
+	if (input.Data[0].size() != input.Data.size())
+		throw std::exception("matrix is not match format");
+
+	Matrix temp = input;
+	Matrix V = input1;
+	int n = temp.Data[0].size();
+	//變成上三角
+	for (int row = 0; row < n; row++)
+	{
+		// 找到最大
+		int maxRow = row;
+		double maxcol = abs(temp.Data[row][row]);
+		for (int r = row + 1; r < n; r++) {
+			if (abs(temp.Data[r][row]) > maxcol) {
+				maxcol = abs(temp.Data[r][row]);
+				maxRow = r;
+			}
+		}
+		// 最大至上交換
+		std::vector<double> tempv = temp.Data[row];
+		temp.Data[row] = temp.Data[maxRow];
+		temp.Data[maxRow] = tempv;
+		// 等式右邊也交換
+		double tempd = V.Data[maxRow][0];
+		V.Data[maxRow][0] = V.Data[row][0];
+		V.Data[row][0] = tempd;
+
+		// 以下的同column歸零(相減)
+		for (int r = row + 1; r < n; r++) {
+			double scale = -temp.Data[r][row] / temp.Data[row][row];
+			tempv = scaleVector(temp.Data[row], scale);
+			temp.Data[r] = addVector(temp.Data[r], tempv);
+			// 等式右邊也要跟者減
+			V.Data[r][0] += V.Data[row][0] * scale;
+			temp.Data[r][row] = 0;	//確保為0
+		}
+	}
+
+	//解題
+	std::vector<double> output(n);
+	for (int i = n - 1; i >= 0; i--) {
+		output[i] = V.Data[i][0] / temp.Data[i][i];
+		for (int k = i - 1; k >= 0; k--) {
+			V.Data[k][0] -= temp.Data[k][i] * output[i];
+		}
+	}
+	return output;
+}
 
 const std::vector<double> CaCuMw::scaleVector(const std::vector<double> input, double scale)
 {

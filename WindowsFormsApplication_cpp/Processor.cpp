@@ -236,6 +236,7 @@ std::string Processor::Start(std::vector<std::string> input)
 					int iout;
 					double dout = 0.0;
 					Matrix mout0, mout1;
+					std::vector<double> vdout;
 					std::string sout = "";
 					std::ostringstream strs;
 					try
@@ -253,6 +254,11 @@ std::string Processor::Start(std::vector<std::string> input)
 							sout = MatrixToString(CaCuMi::Transpose(mout0));
 							return sout;
 						case 2:		// sls
+							mout0 = getSourceM(input[1]);
+							mout1 = getSourceM(input[2]);
+							vdout = CaCuMw::solveLin(mout0, mout1);
+							sout = VectorToString(vdout);
+							return sout;
 						case 3:		// det
 							mout0 = getSourceM(input[1]);
 							dout = CaCuMi::Determinant(mout0);
@@ -411,14 +417,25 @@ std::vector<std::string> Processor::InfixToPostfix(std::vector<std::string> inpu
 std::string Processor::VectorToString(Vector input)
 {
 	std::string output = "[";
+	output += endl;
 	for (int i = 0; i < input.Data.size(); i++)
 	{
 		output += (const char*)(System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(input.Data[i].ToString())).ToPointer();
 		if (i != input.Data.size() - 1)
+		{
 			output += ", ";
+			output += endl;
+		}
 	}
 	output += "]";
 	return output;
+}
+std::string Processor::VectorToString(std::vector<double> input)
+{
+	Vector v;
+	v.Name = "No Name";
+	v.Data = input;
+	return VectorToString(v);
 }
 std::string Processor::MatrixToString(Matrix input)
 {

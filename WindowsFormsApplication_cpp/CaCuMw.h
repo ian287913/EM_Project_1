@@ -13,6 +13,8 @@ public:
 	static const Matrix Add(const Matrix& m1, const Matrix& m2);
 	//rank
 	static const int Rank(const Matrix& input);
+	//sls
+	static const std::vector<double> solveLin(const Matrix& input, const Matrix& V);
 
 	//方便使用的乘法vector
 	static const std::vector<double> scaleVector(const std::vector<double>, double);

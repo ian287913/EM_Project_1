@@ -21,7 +21,8 @@ public:
 
 	static std::string Start(std::vector<std::string> input);
 	static std::vector<std::string> InfixToPostfix(std::vector<std::string> input);
-	static std::string VectorToString(Vector);
+	static std::string VectorToString(Vector); 
+	static std::string VectorToString(std::vector<double>);
 	static std::string MatrixToString(Matrix);
 	static const Vector getSource(std::string);
 	static const Matrix getSourceM(std::string);
