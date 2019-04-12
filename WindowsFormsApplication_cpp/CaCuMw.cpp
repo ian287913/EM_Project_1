@@ -132,8 +132,10 @@ const std::vector<double> CaCuMw::scaleVector(const std::vector<double> input, d
 	std::vector<double> output = input;
 	for (int i = 0; i < output.size(); i++)
 	{
-		if(output[i] != 0)
+		if (output[i] != 0) {
 			output[i] = output[i] * scale;
+			output[i] = round(output[i] * 1000000) / 1000000;
+		}
 	}
 	return output;
 }
@@ -143,7 +145,9 @@ const std::vector<double> CaCuMw::addVector(const std::vector<double> v1, const 
 		throw std::exception("vector add error");
 	std::vector<double> output = v1;
 	for (int i = 0; i < output.size(); i++)
-		if (output[i] != 0 || v2[i] != 0)
+		if (output[i] != 0 || v2[i] != 0) {
 			output[i] = output[i] + v2[i];
+			output[i] = round(output[i] * 1000000) / 1000000;
+		}
 	return output;
 }

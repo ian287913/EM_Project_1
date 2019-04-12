@@ -424,8 +424,8 @@ std::string Processor::VectorToString(Vector input)
 		if (i != input.Data.size() - 1)
 		{
 			output += ", ";
-			output += endl;
 		}
+		output += endl;
 	}
 	output += "]";
 	return output;
