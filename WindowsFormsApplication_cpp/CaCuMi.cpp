@@ -3,9 +3,7 @@
 const Matrix CaCuMi::Multiply(const Matrix & M1, const Matrix & M2)
 {
 	if (M1.Data[0].size() != M2.Data.size())
-	{
 		throw std::exception("(Multiply) cannot match the size.");
-	}
 	
 	int row = M1.Data.size(), col = M2.Data[0].size();
 	int depth = M2.Data.size();
@@ -22,7 +20,7 @@ const Matrix CaCuMi::Multiply(const Matrix & M1, const Matrix & M2)
 		}
 	}
 
-	return Matrix();
+	return tempMatrix;
 }
 
 const Matrix CaCuMi::Multiply(const Matrix & M, const Vector & V)
@@ -61,7 +59,6 @@ const double CaCuMi::Determinant(const Matrix & M)
 		}
 		value += (add + sub);
 	}
-
 
 	return value;
 }

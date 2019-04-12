@@ -13,7 +13,7 @@ public:
 	//	dont use dis
 	static const Matrix Multiply(const Matrix& M	, const Vector& V);	
 	static const Matrix Multiply(const Matrix& M	, const double& scale);
-
+	//	¦æ¦C¦¡
 	static const double Determinant(const Matrix& M);
 	static const Matrix Cofactors(const Matrix& M);
 
