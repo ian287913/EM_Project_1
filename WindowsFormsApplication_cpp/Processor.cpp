@@ -205,10 +205,6 @@ std::string Processor::Start(std::vector<std::string> input)
 						throw std::exception("Stack error");
 					output = VectorToString(stack[0]);
 				}
-				catch (const myException e)
-				{
-					output = "Cacu error: " + e.Content;
-				}
 				catch (std::exception& e)
 				{
 					output = "Processor error: ";
@@ -314,10 +310,6 @@ std::string Processor::Start(std::vector<std::string> input)
 					if (stack.size() != 1)
 						throw std::exception("Stack error");
 					output = MatrixToString(stack[0]);
-				}
-				catch (const myException e)
-				{
-					output = "Cacu error: " + e.Content;
 				}
 				catch (const std::exception& e)
 				{
