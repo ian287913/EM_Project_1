@@ -5,6 +5,7 @@
 #include "Vec.h"
 #include "Matrix.h"
 #include "CaCu.h"
+#include "CaCuMw.h"
 
 static class Processor
 {

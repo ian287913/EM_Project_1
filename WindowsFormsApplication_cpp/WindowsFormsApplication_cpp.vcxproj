@@ -138,6 +138,7 @@
   <ItemGroup>
     <ClCompile Include="CaCu.cpp" />
     <ClCompile Include="CaCuMi.cpp" />
+    <ClCompile Include="CaCuMw.cpp" />
     <ClCompile Include="DataManager.cpp" />
     <ClCompile Include="DotNetUitilities.cpp" />
     <ClCompile Include="Processor.cpp" />
@@ -146,6 +147,7 @@
   <ItemGroup>
     <ClInclude Include="CaCu.h" />
     <ClInclude Include="CaCuMi.h" />
+    <ClInclude Include="CaCuMw.h" />
     <ClInclude Include="DataManager.h" />
     <ClInclude Include="DotNetUtilities.h" />
     <ClInclude Include="Matrix.h" />
