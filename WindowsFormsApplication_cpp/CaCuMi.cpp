@@ -43,6 +43,47 @@ const Matrix CaCuMi::Multiply(const Matrix & M, const double & scale)
 	return Matrix();
 }
 
+const double CaCuMi::Determinant(const Matrix & M)
+{
+	int row = M.Data.size(), col = M.Data[0].size();
+	double value = 0.0;
+	double add = 1.0;
+	double sub = -1.0;
+
+	for (int r = 0; r < row; r++)
+	{
+		add = 1.0;
+		sub = -1.0;
+		for (int c = 0; c < col; c++)
+		{
+			add *= M.Data[(r + c) % row][c];
+			sub *= M.Data[(r - c) % row][c];
+		}
+		value += (add + sub);
+	}
+
+
+	return value;
+}
+
+///...
+const Matrix CaCuMi::Cofactors(const Matrix & M)
+{
+	Matrix tempMatrix = Matrix(M);
+	int row = M.Data.size(), col = M.Data[0].size();
+
+	for (int r = 0; r < row; r++)
+	{
+		for (int c = 0; c < col; c++)
+		{
+			///...
+			///
+		}
+	}
+
+	return Matrix();
+}
+
 void CaCuMi::ZeroCheck(const Matrix & M)
 {
 	if (M.Data.size() <= 0)
