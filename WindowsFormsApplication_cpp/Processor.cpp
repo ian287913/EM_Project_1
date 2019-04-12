@@ -24,7 +24,8 @@ std::vector<std::string> Processor::FunctionListM = {
 		"eigen",
 		"pm",
 		"ls",
-		"rref"
+		"rref",
+		"cof"
 };
 std::vector<std::string> Processor::priority = { "*", "/", "%", "+", "-" };
 std::vector<Vector> Processor::SourceVectors = std::vector<Vector>();
@@ -247,12 +248,27 @@ std::string Processor::Start(std::vector<std::string> input)
 							return sout;
 						case 2:		// sls
 						case 3:		// det
+							mout0 = getSourceM(input[1]);
+							dout = CaCuMi::Determinant(mout0);
+							strs << dout;
+							sout += strs.str();
+							return sout;
 						case 4:		// inv
+							mout0 = getSourceM(input[1]);
+							sout = MatrixToString(CaCuMi::Inverse(mout0));
+							return sout;
 						case 5:		// adj
+							mout0 = getSourceM(input[1]);
+							sout = MatrixToString(CaCuMi::Adjoint(mout0));
+							return sout;
 						case 6:		// eigen
 						case 7:		// pm
 						case 8:		// ls
 						case 9:		// rref
+						case 10:	// cof
+							mout0 = getSourceM(input[1]);
+							sout = MatrixToString(CaCuMi::Cofactors(mout0));
+							return sout;
 						default:
 							return "This function is invalid for now.";
 							break;
