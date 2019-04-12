@@ -233,6 +233,7 @@ std::string Processor::Start(std::vector<std::string> input)
 							break;
 						}
 					}
+					int iout;
 					double dout = 0.0;
 					Matrix mout0, mout1;
 					std::string sout = "";
@@ -242,6 +243,11 @@ std::string Processor::Start(std::vector<std::string> input)
 						switch (func)
 						{
 						case 0:		// rank
+							mout0 = getSourceM(input[1]);
+							iout = CaCuMw::Rank(mout0);
+							strs << "rank: " << iout;
+							sout += strs.str();
+							return sout;
 						case 1:		// trans
 							mout0 = getSourceM(input[1]);
 							sout = MatrixToString(CaCuMi::Transpose(mout0));
